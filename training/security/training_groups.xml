@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="group_training_hr" model="res.groups">
+        <field name="name">Human resource</field>
+    </record>
+    <record id="group_training_teacher" model="res.groups">
+        <field name="name">Teacher</field>
+    </record>
+    <record id="group_training_requester" model="res.groups">
+        <field name="name">Training Requester</field>
+    </record>
+</odoo>
