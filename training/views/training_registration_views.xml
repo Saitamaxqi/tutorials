@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<record id="training_registration_action" model="ir.actions.act_window">
+    <field name="name">Registrations</field>
+    <field name="res_model">training.registration</field>
+    <field name="view_mode">list,form</field>
+</record>
+</odoo>
