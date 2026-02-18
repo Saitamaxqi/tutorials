@@ -7,7 +7,11 @@ class TrainingCourses(models.Model):
     serial_number = fields.Char(string='Serial Number', required=True)
     name = fields.Char(string='Course Name', required=True)
     description = fields.Text(string='Description')
-    teacher_id = fields.Many2one('training.teachers', string='Teacher')
+    teacher_id = fields.Many2one(
+    'hr.employee', 
+    string='Teacher',
+    domain="[('job_id.name', '=', 'Teacher')]"
+)
     start_date = fields.Date(string='Start Date')
     end_date = fields.Date(string='End Date')
     number_of_days = fields.Integer(string='Number of Days', compute='_compute_number_of_days')

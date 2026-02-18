@@ -10,8 +10,9 @@
     <field name="model">training.registration</field>
     <field name="arch" type="xml">
         <list>
-            <field name="trainee_name"/>
-            <field name="course_id"/>
+            <field name="trainee_id"/>
+            <field name="course_serial_number"/>
+            <field name="course_name"/>
             <field name="create_date"/>
         </list>
     </field>
@@ -20,13 +21,34 @@
     <field name="name">training.registration.form</field>
     <field name="model">training.registration</field>
     <field name="arch" type="xml">
-        <form>
+         <form>
             <sheet>
                 <group>
-                    <field name="serial_number" string="Serial Number"/>
-                    <field name="trainee_name" string="Trainee Name"/>
-                    <field name="course_id" string="Course" widget="selection"/>
+                    <h1><field name="trainee_id"/></h1>
                 </group>
+                <group>
+                <group class="col-6">
+                <field name="course_serial_number" string="Serial Number"/>
+                <field name="course_name" string="Course Name"/>
+                </group>
+                <group class="col-6">
+                <field name="teacher_name" string="Teacher"/>
+                <field name="number_of_days" string="Number of Days"/>
+                </group>
+                </group>
+                <notebook>
+                    <page string="Description">
+                        <group>
+                        <field name="course_desc" string="Description"/>
+                        <field name="time" string="Time"/>
+                        <field name="start_date" string="Start Date"/>
+                        <field name="end_date" string="End Date"/>
+                        <field name="total_seats" string="Total Seats"/>
+                        <field name="location_name" string="Location"/>
+                        <field name="room_name" string="Room"/>
+                        </group>
+                    </page>
+                </notebook>
             </sheet>
         </form>
     </field>

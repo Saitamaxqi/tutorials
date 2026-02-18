@@ -18,9 +18,7 @@
             <field name="start_date" string="Start Date"/>
             <field name="end_date" string="End Date"/>
             <field name="available_seats" string="Available Seats"/>
-            <field name="teacher_id" string="Teacher">
-                <field name="name" string="Teacher Name"/>
-            </field>
+            <field name="teacher_id" string="Teacher"/>
             <field name="deadline" string="Deadline"/>
         </list>
     </field>
