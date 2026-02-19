@@ -14,6 +14,8 @@
             <field name="course_serial_number"/>
             <field name="course_name"/>
             <field name="create_date"/>
+            <button name="set_approved" icon="fa-check" type="object" class="oe_highlight" invisible="status"/>
+            <button name="set_rejected" icon="fa-close" type="object" class="oe_highlight" invisible="status"/>
         </list>
     </field>
 </record>
@@ -23,6 +25,15 @@
     <field name="arch" type="xml">
          <form>
             <sheet>
+                <group>
+                <group class="col-md-6">
+                <button name="set_approved" string="APPROVE" type="object" class="oe_highlight"/>
+                <button name="set_rejected" string="REJECT" type="object" class="oe_highlight"/>
+                </group>
+                <group class="col-md-6">
+                <field name="status" widget="statusbar"/>
+                </group>
+                </group>
                 <group>
                     <h1><field name="trainee_id"/></h1>
                 </group>

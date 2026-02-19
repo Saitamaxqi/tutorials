@@ -24,7 +24,6 @@ class TrainingRegistration(models.Model):
     location_name = fields.Char(string='Location Name', related='course_id.location_id.name',readonly=True)
     total_seats = fields.Integer(string='Total Seats', related='course_id.total_seats',readonly=True)
     status = fields.Selection([
-        ('draft','Draft'),
         ('approved','Approved'),
         ('rejected','Rejected')
     ])
@@ -38,3 +37,13 @@ class TrainingRegistration(models.Model):
             if course.deadline and fields.Date.today() > course.deadline:
                 raise ValidationError("Registration deadline has passed.")
         return super(TrainingRegistration, self).create(vals)
+    
+    def set_approved(self):
+        for record in self:
+            if record.status == 'draft':
+                record.status='approved'
+    
+    def set_rejected(self):
+        for record in self:
+            if record.status == 'draft':
+                record.status='rejected'
