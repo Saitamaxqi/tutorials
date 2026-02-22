@@ -9,13 +9,13 @@
     <field name="name">training.registration.list</field>
     <field name="model">training.registration</field>
     <field name="arch" type="xml">
-        <list>
+        <list decoration-danger="status == 'rejected'" decoration-success="status == 'approved'">
             <field name="trainee_id"/>
             <field name="course_serial_number"/>
             <field name="course_name"/>
             <field name="create_date"/>
-            <button name="set_approved" icon="fa-check" type="object" class="oe_highlight" invisible="status"/>
-            <button name="set_rejected" icon="fa-close" type="object" class="oe_highlight" invisible="status"/>
+            <button name="set_approved" icon="fa-check" type="object" class="oe_highlight" invisible="status" groups="!training.training_group_requester"/>
+            <button name="set_rejected" icon="fa-close" type="object" class="oe_highlight" invisible="status" groups="!training.training_group_requester"/>
         </list>
     </field>
 </record>
@@ -27,8 +27,8 @@
             <sheet>
                 <group>
                 <group class="col-md-6">
-                <button name="set_approved" string="APPROVE" type="object" class="oe_highlight"/>
-                <button name="set_rejected" string="REJECT" type="object" class="oe_highlight"/>
+                <button name="set_approved" string="APPROVE" type="object" class="oe_highlight" groups="!training.training_group_requester"/>
+                <button name="set_rejected" string="REJECT" type="object" class="oe_highlight" groups="!training.training_group_requester"/>
                 </group>
                 <group class="col-md-6">
                 <field name="status" widget="statusbar"/>
