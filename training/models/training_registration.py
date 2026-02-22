@@ -1,5 +1,7 @@
+from datetime import date
 from odoo import api, models, fields
 from odoo.exceptions import ValidationError
+from odoo.tools.convert import relativedelta
 
 class TrainingRegistration(models.Model):
     _name = 'training.registration'
@@ -30,25 +32,57 @@ class TrainingRegistration(models.Model):
 
     @api.model_create_multi
     def create(self, vals):
+        employee = self.env.user.employee_id
+        if not employee:
+            raise ValidationError("Your user account is not linked to an employee record. Please contact HR.")
         for val in vals:
             course = self.env['training.courses'].browse(val['course_id'])
+            contract = self.env['hr.version'].search([
+                ('employee_id', '=', employee.id),
+                ('contract_date_end', '>=', date.today())
+            ], order='contract_date_start asc', limit=1)
+            start_of_year = date(date.today().year, 1, 1)
+            courses_this_year = self.env['training.registration'].search_count([
+                ('trainee_id', '=', employee.id),
+                ('create_date', '>=', start_of_year),
+                ('status', '=', 'approved')
+            ])
+            pending_requests = self.env['training.registration'].search_count([
+                ('trainee_id', '=', employee.id),
+                ('status', '=', False)
+            ])
+            if contract and contract.date_start:
+                six_months_after_start = contract.date_start + relativedelta(months=6)
+                
+                if fields.Date.today() < six_months_after_start:
+                    raise ValidationError("You must complete 6 months from your contract start date.")
+            else:
+                raise ValidationError("Contract start date is missing. Please contact HR.")
             if course.available_seats <= 0:
                 raise ValidationError("No available seats for this course.")
             if course.deadline and fields.Date.today() > course.deadline:
                 raise ValidationError("Registration deadline has passed.")
-        regs = super(TrainingRegistration, self).create(vals)
-        for reg in regs:
-            self.env['training.my.courses'].create({
-            'registration_id': reg.id
-        })
-        return regs
+            if courses_this_year >= 1:
+                raise ValidationError("Employee cannot enroll for more than 1 course per year.")
+            if pending_requests >= 1:
+                raise ValidationError("Employee cant register while having a pending request.")
+            return super(TrainingRegistration, self).create(vals)
     
     def set_approved(self):
         for record in self:
             if not record.status:
                 record.status='approved'
+                self.env['training.my.courses'].create({
+                'registration_id': record.id
+            })
     
     def set_rejected(self):
         for record in self:
             if not record.status:
                 record.status='rejected'
+    
+    def unlink(self):
+        for record in self:
+            if record.status in ['approved', 'rejected']:
+                raise ValidationError("You cannot delete an approved or rejected registration record.")
+            return super().unlink()
