@@ -38,6 +38,9 @@
                     <h1><field name="trainee_id"/></h1>
                 </group>
                 <group>
+                <field name="course_id"/>
+                </group>
+                <group>
                 <group class="col-6">
                 <field name="course_serial_number" string="Serial Number"/>
                 <field name="course_name" string="Course Name"/>

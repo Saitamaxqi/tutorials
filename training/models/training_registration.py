@@ -36,14 +36,19 @@ class TrainingRegistration(models.Model):
                 raise ValidationError("No available seats for this course.")
             if course.deadline and fields.Date.today() > course.deadline:
                 raise ValidationError("Registration deadline has passed.")
-        return super(TrainingRegistration, self).create(vals)
+        regs = super(TrainingRegistration, self).create(vals)
+        for reg in regs:
+            self.env['training.my.courses'].create({
+            'registration_id': reg.id
+        })
+        return regs
     
     def set_approved(self):
         for record in self:
-            if record.status == 'draft':
+            if not record.status:
                 record.status='approved'
     
     def set_rejected(self):
         for record in self:
-            if record.status == 'draft':
+            if not record.status:
                 record.status='rejected'

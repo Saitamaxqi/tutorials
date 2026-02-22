@@ -3,8 +3,10 @@
     "version": "1.0",
     "depends": ["base","hr"],
     "data": [
+         "security/training_groups.xml",
         "security/ir.model.access.csv",
-        "security/training_groups.xml",
+        "security/training_registration_security.xml",
+        "security/training_my_courses_security.xml",
         "views/training_courses_views.xml",
         "views/training_locations_views.xml",
         "views/training_rooms_views.xml",
